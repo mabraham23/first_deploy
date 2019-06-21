@@ -74,8 +74,44 @@ server.post( "/user", function(req, res) {
             }
             res.json( response );
         }
-    })
+    });
+
+    //Get /names
+    server.get( "/names", function (req, res ) {
+        var response = {
+            names: data.names
+        };
+        res.json( response );
+    });
+
+    // Get /names/id
+    server.get( "/names/:id", function ( req, res ) {
+        //console.log( req.params.id );
+        var filtered_names = [ ];
+        data.names.forEach( function (name) {
+            if ( name.id == req.params.id) {
+                filtered_names.push( name );
+            }
+        });
+
+    // 404 if we didn't find a name with that id
+    if ( filtered_names.length == 0 ) {
+        res.status( 404 );
+        var response = {
+            msg: "Couldn't find a name with that id"
+        };
+        res.json( response );
+    } else { //200 if we did find a name, send back the respective name
+        var name = filtered_names[ 0 ];
+        var response = {
+            name: name
+        };
+        res.json( response );
+    }
+        res.send( );
+    });
 
 server.listen( port, function ( ) {
-    console.log(`Listening on port ${port}`);
+    console.log(`Listening on 
+    port ${port}`);
 });
